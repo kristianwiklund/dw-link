@@ -6,16 +6,27 @@ An alternative hardware solution is described here: [AVR/Arduino Hardware Debugg
 * MISO is connected to D12
 * SCK is connected to D13
 
-Comparing this to the dw-link solution:
+We have the following functional pins in the manual:
 
-* MOSI - D11 (OK!)
-* MISO - D12 (OK!)
-* SCK - D13 (OK!)
-* RESET - D8 (NOK - on Wayne's solution, this is an input to switch to programming mode)
-* POWER - D9 (OK!)
+AH Mapping | Functional pin | Direction | Explanation
+--- | --- | --- | ---
+NC | DEBTX | Output | Serial line for debugging output (when debugging the debugger) 
+D10 | DWLINE | Input/Output | debugWIRE communication line to be connected to RESET on the target board
+GND | GND | Supply | Ground
+NC  | TISP | Output | Control line: If low, then ISP programming is enabled 
+D12 | TMISO | Input | SPI signal "Master In, Slave Out"
+D11 | TMOSI | Output | SPI signal "Master Out, Slave In"
+D13 | TSCK | Output | SPI signal "Master clock"
+D1  | SNSGND | Input | If open, signals that the debugger should use the [pin mapping tuned for an ISP cable](#simplemap), if low, use the pin mapping for the particular board as specified in the [table below](#complexmap) 
+NC  | V33 | Output | Control line to the MOSFET to switch on 3.3 volt supply for target
+NC  | V5  | Output | Control line to switch on the 5 volt line
+Vcc | Vcc | Supply | Voltage supply from the board (5 V) that can be used to power the target
+VHIGH | Input from switch | If low, then choose 5 V supply for target, otherwise 3.3 V 
+VON | Input from switch | If low, then supply target (and use power-cycling)
+VSUP | Output | Used as a target supply line driven directly by an ATmega pin, i.e., this should not source more than 20 mA (this is the cheap alternative to using MOSFETs to drive the supply for the target board, e.g., when using a prototype board as sketched in [Section 7.1](#section71)) 
 
 We redefine the pin map to
-
+	// VHIGH, VON, V33, TSCK, TMOSI, TMISO, VSUP, DEBTX, TISP, SYSLED, LEDGND
     const PROGMEM pinmap  boardpm  = { 2, 5, 9, 7, 12, 10, 11, 15, 3, 6, 13, pundef } ;
     const byte SNSGND = 14;
     const byte DWLINE = 10; 

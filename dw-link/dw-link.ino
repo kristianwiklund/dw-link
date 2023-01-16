@@ -209,6 +209,7 @@ volatile byte *ledout;
 
 // pin mapping for different situations and boards
 const byte pundef = 255; // undefined pin
+
 struct pinmap {
   byte VHIGH;
   byte VON;
@@ -223,12 +224,12 @@ struct pinmap {
   byte SYSLED;
   byte LEDGND;
 } pm = { pundef, pundef, pundef, pundef, 13, 11, 12, 9, 3, pundef, 7, 6 };
-#define ALTERNATE_BOARD_AHDOTC
+
 #if defined(ALTERNATE_BOARD_AHDOTC)
 // these pins match the hardware build described by Wayne Holder: https://sites.google.com/site/wayneholder/debugwire3
 // See docs/alternative_hardware.md
-const PROGMEM pinmap  boardpm  = { 2, 5, 9, 7, 12, 10, 11, 15, 3, 6, 13, pundef } ; 
-const byte SNSGND = 14;
+const PROGMEM pinmap  boardpm  = {pundef,pundef,pundef,pundef, 13, 11, 12, 8, 3, pundef, 7, 6};
+const byte SNSGND = 1; // basically, any unused pin
 const byte DWLINE = 10; // changed from 8 to 10
 #elif defined(ARDUINO_AVR_UNO)
 const PROGMEM pinmap  boardpm  = { 2, 5, 9, 7, 12, 10, 11, 15, 3, 6, 13, pundef } ;
@@ -548,8 +549,14 @@ int main(void) {
   // setup
   Serial.begin(INITIALBPS);
   pinMode(SNSGND, INPUT_PULLUP);
+
   if (digitalRead(SNSGND) == 0) // adapter board!
     memcpy_P(&pm, &boardpm, sizeof(pinmap));
+#ifdef ALTERNATE_BOARD_AHDOTC
+	// always use the pinmap if we are on the alternate hw
+	memcpy_P(&pm, &boardpm, sizeof(pinmap));
+#endif	
+	
   ledmask = digitalPinToBitMask(pm.SYSLED);
   ledout = portOutputRegister(digitalPinToPort(pm.SYSLED));
   DEBINIT(pm.DEBTX);
