@@ -1055,6 +1055,8 @@ inline void gdbHelp(void) {
   gdbDebugMessagePSTR(PSTR("monitor flashcount   - report number of flash pages written since start"), -1);
   gdbDebugMessagePSTR(PSTR("monitor timeouts     - report timeouts"), -1);
   gdbDebugMessagePSTR(PSTR("monitor version      - report version number"), -1);
+	gdbDebugMessagePSTR(PSTR("monitor tpwr enable  - turn on target power"), -1);
+	gdbDebugMessagePSTR(PSTR("monitor tpwr disable - turn off target power"), -1);
   gdbDebugMessagePSTR(PSTR("All commands with (*) lead to a reset of the target"), -1);
   gdbSendReply("OK");
 }
