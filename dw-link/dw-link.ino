@@ -228,7 +228,7 @@ struct pinmap {
 #if defined(ALTERNATE_BOARD_AHDOTC)
 // these pins match the hardware build described by Wayne Holder: https://sites.google.com/site/wayneholder/debugwire3
 // See docs/alternative_hardware.md
-const PROGMEM pinmap  boardpm  = {pundef,pundef,pundef,pundef, 13, 11, 12, 8, 3, pundef, 7, 6};
+const PROGMEM pinmap  boardpm  = {pundef,pundef,pundef,pundef, 13, 11, 12, 9, 3, pundef, 7, 6};
 const byte SNSGND = 1; // basically, any unused pin
 const byte DWLINE = 10; // changed from 8 to 10
 #elif defined(ARDUINO_AVR_UNO)
@@ -1037,9 +1037,9 @@ void gdbParseMonitorPacket(const byte *buf)
   else if (memcmp_P(buf, (void *)PSTR("74696d656f75747300"), max(8,min(18,clen))) == 0)
     gdbTimeoutCounter();                                                    /* timeouts */
 	else if (memcmp_P(buf, (void *)PSTR("7470777220656e61626c65"), 22) == 0)
-		power(true),gdbSendReply("OK"); /* tpwr enable */
+		{power(true);gdbSendReply("OK");} /* tpwr enable */
 	else if (memcmp_P(buf, (void *)PSTR("747077722064697361626c65"), 24) == 0)
-		power(false),gdbSendReply("OK"); /* tpwr disable */
+		{power(false);gdbSendReply("OK");} /* tpwr disable */
   else if (memcmp_P(buf, (void *)PSTR("726573657400"), max(4,min(12,clen))) == 0) {
     if (gdbReset()) gdbSendReply("OK");                                     /* re[set] */
     else gdbSendReply("E09");
