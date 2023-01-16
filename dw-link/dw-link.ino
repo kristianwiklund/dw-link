@@ -228,7 +228,7 @@ struct pinmap {
 #if defined(ALTERNATE_BOARD_AHDOTC)
 // these pins match the hardware build described by Wayne Holder: https://sites.google.com/site/wayneholder/debugwire3
 // See docs/alternative_hardware.md
-const PROGMEM pinmap  boardpm  = {pundef,pundef,pundef,pundef, 13, 11, 12, 8, 3, pundef, 7, 6};
+const PROGMEM pinmap  boardpm  = {pundef,pundef,pundef,pundef, 13, 11, 12, 9, 3, pundef, 7, 6};
 const byte SNSGND = 1; // basically, any unused pin
 const byte DWLINE = 10; // changed from 8 to 10
 #elif defined(ARDUINO_AVR_UNO)
