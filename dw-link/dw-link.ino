@@ -1036,10 +1036,15 @@ void gdbParseMonitorPacket(const byte *buf)
     gdbVersion();                                                           /* version */
   else if (memcmp_P(buf, (void *)PSTR("74696d656f75747300"), max(8,min(18,clen))) == 0)
     gdbTimeoutCounter();                                                    /* timeouts */
+	else if (memcmp_P(buf, (void *)PSTR("7470777220656e61626c65"), 22) == 0)
+		power(true),gdbSendReply("OK"); /* tpwr enable */
+	else if (memcmp_P(buf, (void *)PSTR("747077722064697361626c65"), 24) == 0)
+		power(false),gdbSendReply("OK"); /* tpwr disable */
   else if (memcmp_P(buf, (void *)PSTR("726573657400"), max(4,min(12,clen))) == 0) {
     if (gdbReset()) gdbSendReply("OK");                                     /* re[set] */
     else gdbSendReply("E09");
   } else gdbSendReply("");
+
 }
 
 // help function (w/o unit tests)

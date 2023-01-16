@@ -481,7 +481,8 @@ mo[nitor] fla[shcount] | reports on how many flash-page write operation have tak
 mo[nitor] sa[festep] | single-stepping is uninterruptible and time is frozen during single-stepping, which is the default 
 mo[nitor] un[safestep] | single stepping is interruptible and time advances during single-stepping 
 mo[nitor] ve[rsion] | print version number of firmware
-
+mo[nitor] tpwr enable | turn on power to target
+mo[nitor] tpwr disable | turn off power to target
 Note that all monitor commands that change fuses also implicitly reset the MCU. In other words, all commands except the last eight will do that.
 
 <a name="section6"></a>
